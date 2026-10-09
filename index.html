@@ -175,11 +175,15 @@ const bastData = [
 // Startpunkt ist standardmäßig auf den Raum Hanau/Maintal zentriert
 const map = L.map('map', { center: [50.1420, 8.8250], zoom: 12, preferCanvas: true });
 
-// Kartenkacheln: Anbieter hier austauschbar. Die Standard-Kacheln von tile.openstreetmap.org
-// sind nur für geringe Nutzung gedacht und werden ohne gültigen Referer (z. B. bei file://) blockiert.
-const TILE_URL = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
-const TILE_ATTRIBUTION = '© OpenStreetMap-Mitwirkende © CARTO';
-L.tileLayer(TILE_URL, { attribution: TILE_ATTRIBUTION, subdomains: 'abcd', maxZoom: 19 }).addTo(map);
+// Kartenkacheln: Anbieter hier austauschbar.
+// Standard: OpenStreetMap, ohne Schlüssel. Funktioniert von einer https-Seite wie github.io,
+// nicht beim Öffnen der Datei per Doppelklick (file://) und nur für geringe Nutzung.
+// Alternative mit kostenlosem Schlüssel (carto.com/basemaps/apikey):
+//   'https://basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png?key=DEIN_SCHLUESSEL'
+// Hinweis: Ein Schlüssel im Code eines öffentlichen Repositories ist für alle sichtbar.
+const TILE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+const TILE_ATTRIBUTION = '© OpenStreetMap-Mitwirkende';
+L.tileLayer(TILE_URL, { attribution: TILE_ATTRIBUTION, maxZoom: 19 }).addTo(map);
 
 // Erzwinge die Kartenberechnung beim Laden
 setTimeout(() => { map.invalidateSize(); }, 400);
